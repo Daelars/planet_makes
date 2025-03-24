@@ -1,0 +1,152 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import ProductForm from "../components/Products/Form/ProductForm";
+import ProductPreview from "../components/Products/Preview/ProductPreview";
+import SuccessMessage from "../components/successMessage";
+
+export default function UploadProductPage() {
+  const [createdProduct, setCreatedProduct] = useState<any>(null);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const pageVariants = {
+    initial: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const childVariants = {
+    initial: { opacity: 0, y: 30 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 20,
+        stiffness: 100,
+      },
+    },
+  };
+
+  const handleProductCreated = (product: any) => {
+    setCreatedProduct(product);
+    setFormSubmitted(true);
+  };
+
+  const handleCreateAnother = () => {
+    setCreatedProduct(null);
+    setFormSubmitted(false);
+  };
+
+  return (
+    <motion.div
+      className="min-h-screen bg-black text-white font-mono"
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+    >
+      {/* Spacer for fixed navbar */}
+      <div className="h-14 sm:h-16"></div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <motion.h1
+          className="text-xl sm:text-2xl font-medium mb-8 sm:mb-12 text-center"
+          variants={childVariants}
+        >
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={formSubmitted ? "submitted" : "initial"}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {formSubmitted
+                ? "Product Created Successfully"
+                : "Create New Product"}
+            </motion.span>
+          </AnimatePresence>
+        </motion.h1>
+
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-5 gap-8"
+          variants={childVariants}
+        >
+          {/* Form Area */}
+          <div className="lg:col-span-3">
+            <AnimatePresence mode="wait">
+              {!formSubmitted ? (
+                <motion.div
+                  key="form"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 12,
+                  }}
+                >
+                  <ProductForm onProductCreated={handleProductCreated} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 30 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 12,
+                  }}
+                >
+                  <SuccessMessage onCreateAnother={handleCreateAnother} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Preview Area */}
+          <motion.div className="lg:col-span-2" variants={childVariants}>
+            <ProductPreview
+              createdProduct={createdProduct}
+              formCompletionPercentage={
+                formSubmitted ? 100 : createdProduct ? 100 : 0
+              }
+              formSubmitted={formSubmitted}
+            />
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Background animated gradient */}
+      <motion.div
+        className="fixed inset-0 -z-10 opacity-20 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.2 }}
+        transition={{ duration: 2 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-600/20" />
+
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-tr from-purple-500/20 to-blue-600/20"
+          animate={{
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
