@@ -1,5 +1,3 @@
-//Card.tsx
-
 "use client";
 import React, { useState } from "react";
 import {
@@ -9,8 +7,10 @@ import {
   ChevronDown,
   Plus,
   Minus,
+  Loader2,
 } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
+import { addToCart } from "@/app/actions/cart"; // Import the server action
 
 export interface Product {
   collection?: string;
@@ -18,7 +18,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  imageUrl: string; // This field stores the URL from UploadThing
+  imageUrl: string;
   rating?: number;
   reviewsCount?: number;
   isOnSale?: boolean;
@@ -37,6 +37,10 @@ const stripePromise = loadStripe(
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [selectedColor, setSelectedColor] = useState("black");
+  const [selectedSize, setSelectedSize] = useState("standard");
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [addToCartError, setAddToCartError] = useState<string | null>(null);
 
   // Retrieve the product image from the imageUrl field stored by UploadThing.
   const imageUrl = product.imageUrl || "/api/placeholder/600/600";
@@ -58,8 +62,38 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.currentTarget.src = "/api/placeholder/600/600";
   };
 
-  const handleAddToCart = () => {
-    // Add to Cart feature removed.
+  const handleAddToCart = async () => {
+    setIsAddingToCart(true);
+    setAddToCartError(null);
+
+    try {
+      // Call the server action to add the item to cart
+      const result = await addToCart(
+        product.id,
+        1, // Default quantity
+        selectedColor,
+        selectedSize
+      );
+
+      if (result.success) {
+        // Show success feedback (optional)
+        // You could add a toast notification here
+      } else {
+        setAddToCartError("Failed to add item to cart");
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setAddToCartError(
+        error instanceof Error ? error.message : "Failed to add item to cart"
+      );
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  // Handle color selection
+  const handleColorSelect = (color: string) => {
+    setSelectedColor(color);
   };
 
   const handleBuyNow = async () => {
@@ -175,9 +209,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   Colors
                 </span>
                 <div className="flex space-x-3">
-                  <button className="w-6 h-6 rounded-none bg-black border border-white"></button>
-                  <button className="w-6 h-6 rounded-none bg-gray-400 border border-transparent"></button>
-                  <button className="w-6 h-6 rounded-none bg-white border border-transparent"></button>
+                  <button
+                    className={`w-6 h-6 rounded-none bg-black ${
+                      selectedColor === "black" ? "border-2" : "border"
+                    } border-white`}
+                    onClick={() => handleColorSelect("black")}
+                    aria-label="Select black color"
+                  ></button>
+                  <button
+                    className={`w-6 h-6 rounded-none bg-gray-400 ${
+                      selectedColor === "gray"
+                        ? "border-2 border-white"
+                        : "border border-transparent"
+                    }`}
+                    onClick={() => handleColorSelect("gray")}
+                    aria-label="Select gray color"
+                  ></button>
+                  <button
+                    className={`w-6 h-6 rounded-none bg-white ${
+                      selectedColor === "white"
+                        ? "border-2 border-white"
+                        : "border border-transparent"
+                    }`}
+                    onClick={() => handleColorSelect("white")}
+                    aria-label="Select white color"
+                  ></button>
                 </div>
               </div>
 
@@ -206,20 +262,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   </div>
                 )}
               </div>
+
+              {/* Display error message if present */}
+              {addToCartError && (
+                <div className="mb-4 text-red-400 text-sm">
+                  {addToCartError}
+                </div>
+              )}
             </div>
 
             {/* Add to Cart / Buy Now */}
             <div className="flex flex-col space-y-2">
               <button
-                className="w-full bg-white text-black py-3 font-medium hover:bg-gray-200 transition-colors flex items-center justify-center"
+                className="w-full bg-white text-black py-3 font-medium hover:bg-gray-200 transition-colors flex items-center justify-center disabled:opacity-70"
                 onClick={handleAddToCart}
+                disabled={isAddingToCart}
               >
-                <ShoppingCart size={16} className="mr-2" />
-                Add to Cart
+                {isAddingToCart ? (
+                  <Loader2 size={16} className="mr-2 animate-spin" />
+                ) : (
+                  <ShoppingCart size={16} className="mr-2" />
+                )}
+                {isAddingToCart ? "Adding..." : "Add to Cart"}
               </button>
               <button
                 className="w-full border border-white text-white py-3 font-medium hover:bg-white hover:text-black transition-colors"
                 onClick={handleBuyNow}
+                disabled={isAddingToCart}
               >
                 Buy Now
               </button>

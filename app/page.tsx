@@ -6,11 +6,11 @@ import Navbar from "@/components/Navigation/Main/Navigation";
 import Cart from "@/components/Cart/Cart";
 import Hero from "@/components/Sections/Hero";
 export default async function Home() {
-  // Fetch products from your database
-  const products = (await prisma.product.findMany()).map((product) => ({
-    ...product,
-    originalPrice: product.originalPrice ?? undefined,
-  }));
+  // // Fetch products from your database
+  // const products = (await prisma.product.findMany()).map((product) => ({
+  //   ...product,
+  //   originalPrice: product.originalPrice ?? undefined,
+  // }));
 
   return (
     <>
