@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { addToCart } from "@/app/actions/cart"; // Import the server action
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface Product {
   collection?: string;
@@ -24,6 +25,7 @@ export interface Product {
   isOnSale?: boolean;
   originalPrice?: number;
   images: { id: string; imageUrl: string }[];
+  details?: string[]; // Array of product detail bullet points
 }
 
 interface ProductCardProps {
@@ -31,7 +33,7 @@ interface ProductCardProps {
 }
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
@@ -52,12 +54,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     product.isOnSale && product.originalPrice
       ? Math.round(
           ((product.originalPrice - product.price) / product.originalPrice) *
-            100
+            100,
         )
       : 0;
 
   const handleImageError = (
-    e: React.SyntheticEvent<HTMLImageElement, Event>
+    e: React.SyntheticEvent<HTMLImageElement, Event>,
   ) => {
     e.currentTarget.src = "/api/placeholder/600/600";
   };
@@ -72,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         product.id,
         1, // Default quantity
         selectedColor,
-        selectedSize
+        selectedSize,
       );
 
       if (result.success) {
@@ -84,7 +86,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     } catch (error) {
       console.error("Error adding to cart:", error);
       setAddToCartError(
-        error instanceof Error ? error.message : "Failed to add item to cart"
+        error instanceof Error ? error.message : "Failed to add item to cart",
       );
     } finally {
       setIsAddingToCart(false);
@@ -127,33 +129,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto font-mono">
-      <div className="bg-black rounded-none overflow-hidden border border-gray-800 transition-all duration-300 hover:border-gray-600">
+    <div className="mx-auto max-w-4xl font-mono">
+      <div className="overflow-hidden rounded-none border border-gray-800 bg-black transition-all duration-300 hover:border-gray-600">
         <div className="flex flex-col md:flex-row">
           {/* Left side - Product Image */}
-          <div className="relative md:w-1/2 overflow-hidden bg-black flex items-center justify-center ">
+          <div className="relative flex items-center justify-center overflow-hidden bg-black md:w-1/2">
             {product.isOnSale && (
-              <div className="absolute top-2 left-2 bg-white text-black px-3 py-1 text-xs font-bold z-10">
+              <div className="absolute left-2 top-2 z-10 bg-white px-3 py-1 text-xs font-bold text-black">
                 SALE
               </div>
             )}
             <img
               src={imageUrl}
               alt={product.name}
-              className="w-full h-64 md:h-full object-contain p-4 transition-transform duration-500 hover:scale-105"
+              className="h-64 w-full object-contain p-4 transition-transform duration-500 hover:scale-105 md:h-full"
               onError={handleImageError}
             />
           </div>
 
           {/* Right side - Product Details */}
-          <div className="p-6 md:w-1/2 flex flex-col justify-between text-white">
+          <div className="flex flex-col justify-between p-6 text-white md:w-1/2">
             <div>
-              <div className="flex justify-between items-start">
+              <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-xs uppercase tracking-widest mb-1 block text-gray-400">
+                  <span className="mb-1 block text-xs uppercase tracking-widest text-gray-400">
                     {product.collection || "Collection"}
                   </span>
-                  <h3 className="text-xl font-medium text-white mb-2">
+                  <h3 className="mb-2 text-xl font-medium text-white">
                     {product.name}
                   </h3>
                 </div>
@@ -161,14 +163,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   onClick={() => setIsLiked(!isLiked)}
                   className={`p-2 ${
                     isLiked ? "text-white" : "text-gray-400"
-                  } hover:text-white transition-colors`}
+                  } transition-colors hover:text-white`}
                 >
                   <Heart size={20} fill={isLiked ? "currentColor" : "none"} />
                 </button>
               </div>
 
               {/* Rating */}
-              <div className="flex items-center mb-4">
+              <div className="mb-4 flex items-center">
                 <div className="flex text-white">
                   <Star size={16} fill="currentColor" />
                   <Star size={16} fill="currentColor" />
@@ -176,7 +178,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   <Star size={16} fill="currentColor" />
                   <Star size={16} fill="currentColor" />
                 </div>
-                <span className="text-sm text-gray-400 ml-2">
+                <span className="ml-2 text-sm text-gray-400">
                   {rating} ({reviewsCount})
                 </span>
               </div>
@@ -189,7 +191,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   </span>
                   {product.isOnSale && product.originalPrice && (
                     <>
-                      <span className="text-sm text-gray-400 line-through ml-2">
+                      <span className="ml-2 text-sm text-gray-400 line-through">
                         ${product.originalPrice.toFixed(2)}
                       </span>
                       <span className="ml-2 text-sm font-medium text-white">
@@ -198,26 +200,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     </>
                   )}
                 </div>
-                <span className="text-sm text-gray-400 mt-1 block">
+                <span className="mt-1 block text-sm text-gray-400">
                   In stock - Free shipping
                 </span>
               </div>
 
               {/* Colors */}
               <div className="mb-6">
-                <span className="text-xs uppercase tracking-widest mb-2 block text-gray-400">
+                <span className="mb-2 block text-xs uppercase tracking-widest text-gray-400">
                   Colors
                 </span>
                 <div className="flex space-x-3">
                   <button
-                    className={`w-6 h-6 rounded-none bg-black ${
+                    className={`h-6 w-6 rounded-none bg-black ${
                       selectedColor === "black" ? "border-2" : "border"
                     } border-white`}
                     onClick={() => handleColorSelect("black")}
                     aria-label="Select black color"
                   ></button>
                   <button
-                    className={`w-6 h-6 rounded-none bg-gray-400 ${
+                    className={`h-6 w-6 rounded-none bg-gray-400 ${
                       selectedColor === "gray"
                         ? "border-2 border-white"
                         : "border border-transparent"
@@ -226,7 +228,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     aria-label="Select gray color"
                   ></button>
                   <button
-                    className={`w-6 h-6 rounded-none bg-white ${
+                    className={`h-6 w-6 rounded-none bg-white ${
                       selectedColor === "white"
                         ? "border-2 border-white"
                         : "border border-transparent"
@@ -237,12 +239,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </div>
               </div>
 
-              {/* Description and Product Details */}
+              {/* Product Details with Framer Motion */}
               <div className="mb-6">
-                <p className="text-gray-400">{product.description}</p>
                 <button
                   onClick={() => setShowDetails(!showDetails)}
-                  className="mt-2 text-white text-sm flex items-center hover:underline"
+                  className="flex items-center text-sm text-white hover:underline"
                 >
                   Product details
                   <ChevronDown
@@ -252,20 +253,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     }`}
                   />
                 </button>
-                {showDetails && (
-                  <div className="mt-2 text-sm text-gray-400 space-y-1 pl-2 border-l border-gray-700">
-                    <p>• Adjustable height: 18" to 22"</p>
-                    <p>• 360° swivel rotation</p>
-                    <p>• Weight capacity: 275 lbs</p>
-                    <p>• Breathable mesh back</p>
-                    <p>• 5-wheel rolling base</p>
-                  </div>
-                )}
+                <AnimatePresence>
+                  {showDetails && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-2 text-gray-400">
+                        {product.description.split(" ").slice(0, 10).join(" ")}
+                        {product.description.split(" ").length > 10
+                          ? "..."
+                          : ""}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Display error message if present */}
               {addToCartError && (
-                <div className="mb-4 text-red-400 text-sm">
+                <div className="mb-4 text-sm text-red-400">
                   {addToCartError}
                 </div>
               )}
@@ -274,7 +284,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {/* Add to Cart / Buy Now */}
             <div className="flex flex-col space-y-2">
               <button
-                className="w-full bg-white text-black py-3 font-medium hover:bg-gray-200 transition-colors flex items-center justify-center disabled:opacity-70"
+                className="flex w-full items-center justify-center bg-white py-3 font-medium text-black transition-colors hover:bg-gray-200 disabled:opacity-70"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
@@ -286,7 +296,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {isAddingToCart ? "Adding..." : "Add to Cart"}
               </button>
               <button
-                className="w-full border border-white text-white py-3 font-medium hover:bg-white hover:text-black transition-colors"
+                className="w-full border border-white py-3 font-medium text-white transition-colors hover:bg-white hover:text-black"
                 onClick={handleBuyNow}
                 disabled={isAddingToCart}
               >

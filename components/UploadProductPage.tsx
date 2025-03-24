@@ -46,7 +46,7 @@ export default function UploadProductPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-black font-mono text-white"
+      className="min-h-screen font-mono text-white"
       variants={pageVariants}
       initial="initial"
       animate="animate"
@@ -74,47 +74,45 @@ export default function UploadProductPage() {
           </AnimatePresence>
         </motion.h1>
 
-        <motion.div
-          className="grid grid-cols-1 gap-8 lg:grid-cols-5"
-          variants={childVariants}
-        >
+        <motion.div className="flex flex-col gap-8" variants={childVariants}>
           {/* Form Area */}
-          <div className="lg:col-span-3">
-            <AnimatePresence mode="wait">
-              {!formSubmitted ? (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -30 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 12,
-                  }}
-                >
-                  <ProductForm onProductCreated={handleProductCreated} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 30 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 12,
-                  }}
-                >
-                  <SuccessMessage onCreateAnother={handleCreateAnother} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <AnimatePresence mode="wait">
+            {!formSubmitted ? (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: -30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 12,
+                }}
+              >
+                <ProductForm onProductCreated={handleProductCreated} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 12,
+                }}
+              >
+                <SuccessMessage onCreateAnother={handleCreateAnother} />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Preview Area */}
-          <motion.div className="lg:col-span-2" variants={childVariants}>
+          <motion.div
+            variants={childVariants}
+            className="mx-auto w-full max-w-lg"
+          >
             <ProductPreview
               createdProduct={createdProduct}
               formCompletionPercentage={

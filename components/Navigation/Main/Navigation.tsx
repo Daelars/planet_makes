@@ -42,16 +42,16 @@ const MenuLink = ({
     >
       <a
         href="#"
-        className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold block py-2 sm:py-3 group  items-center"
+        className="group block items-center py-2 text-xl font-bold sm:py-3 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
       >
-        <span className="inline-block relative">
-          <span className="block transition-transform duration-300 group-hover:translate-x-2 touch-device:active:translate-x-2">
+        <span className="relative inline-block">
+          <span className="touch-device:active:translate-x-2 block transition-transform duration-300 group-hover:translate-x-2">
             {label}
           </span>
-          <span className="absolute h-[1px] w-0 bg-white bottom-0 left-0 transition-all duration-300 group-hover:w-full touch-device:active:w-full"></span>
+          <span className="touch-device:active:w-full absolute bottom-0 left-0 h-[1px] w-0 bg-white transition-all duration-300 group-hover:w-full"></span>
         </span>
         <ChevronRight
-          className="ml-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1 touch-device:active:opacity-100 touch-device:active:translate-x-1"
+          className="touch-device:active:opacity-100 touch-device:active:translate-x-1 ml-2 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
           size={16}
         />
       </a>
@@ -78,33 +78,33 @@ const CartItem = ({
 }) => {
   return (
     <div className="flex border-b border-gray-800 py-4">
-      <div className="w-24 h-30 bg-gray-900 mr-4">
+      <div className="h-30 mr-4 w-24 bg-gray-900">
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
 
       <div className="flex-grow">
-        <div className="flex justify-between items-start">
-          <h3 className="text-sm sm:text-base font-medium">{item.name}</h3>
+        <div className="flex items-start justify-between">
+          <h3 className="text-sm font-medium sm:text-base">{item.name}</h3>
           <button
             onClick={() => removeItem(item.id)}
-            className="text-gray-400 hover:text-white p-1"
+            className="p-1 text-gray-400 hover:text-white"
             aria-label="Remove item"
           >
             <Trash2 size={16} />
           </button>
         </div>
 
-        <div className="text-sm text-gray-400 mt-1">
+        <div className="mt-1 text-sm text-gray-400">
           <p>
             {item.color} / {item.size}
           </p>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="mt-4 flex items-center justify-between">
           <div className="flex items-center border border-gray-700">
             <button
               onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -114,7 +114,7 @@ const CartItem = ({
             >
               <Minus size={14} />
             </button>
-            <span className="px-2 py-1 min-w-8 text-center text-sm">
+            <span className="min-w-8 px-2 py-1 text-center text-sm">
               {item.quantity}
             </span>
             <button
@@ -213,8 +213,8 @@ const Navbar = () => {
     if (newQuantity < 1) return;
     setCartItems(
       cartItems.map((item: CartItem) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
+        item.id === id ? { ...item, quantity: newQuantity } : item,
+      ),
     );
   };
 
@@ -229,14 +229,14 @@ const Navbar = () => {
   // Calculate total
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
   const shipping = 4.99;
   const total = subtotal + shipping;
 
   const cartItemCount = cartItems.reduce(
     (count, item) => count + item.quantity,
-    0
+    0,
   );
 
   const handleCheckout = async () => {
@@ -286,10 +286,10 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="w-full flex items-center justify-between bg-black text-white p-3 sm:p-4 font-mono top-0 left-0 z-50">
+      <nav className="left-0 top-0 z-50 flex w-full items-center justify-between bg-black p-3 font-mono text-white sm:p-4">
         <div className="flex items-center">
           <button
-            className="flex items-center text-base sm:text-lg font-medium hover:cursor-pointer relative z-50"
+            className="relative z-50 flex items-center text-base font-medium hover:cursor-pointer sm:text-lg"
             onClick={toggleMenu}
             aria-expanded={isMenuOpen}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -307,10 +307,10 @@ const Navbar = () => {
             )}
           </button>
         </div>
-        <div className="text-base sm:text-lg font-medium">009</div>
+        <div className="text-base font-medium sm:text-lg">009</div>
         <div className="flex items-center space-x-4">
           <button
-            className="flex items-center text-base sm:text-lg font-medium hover:cursor-pointer relative z-50"
+            className="relative z-50 flex items-center text-base font-medium hover:cursor-pointer sm:text-lg"
             onClick={toggleCart}
             aria-expanded={isCartOpen}
             aria-label="Shopping cart"
@@ -326,12 +326,12 @@ const Navbar = () => {
           <SignedOut>
             <div className="flex space-x-2">
               <SignInButton>
-                <button className="px-2 py-1 border border-white hover:bg-white hover:text-black transition-colors">
+                <button className="border border-white px-2 py-1 transition-colors hover:bg-white hover:text-black">
                   Sign In
                 </button>
               </SignInButton>
               <SignUpButton>
-                <button className="px-2 py-1 border border-white hover:bg-white hover:text-black transition-colors">
+                <button className="border border-white px-2 py-1 transition-colors hover:bg-white hover:text-black">
                   Sign Up
                 </button>
               </SignUpButton>
@@ -342,12 +342,12 @@ const Navbar = () => {
 
       {/* Fullscreen Menu */}
       <div
-        className={`fixed inset-0 bg-black text-white font-mono z-40 transition-transform duration-500 overflow-y-auto ${
+        className={`fixed inset-0 z-40 overflow-y-auto bg-black font-mono text-white transition-transform duration-500 ${
           isMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
         ref={menuRef}
       >
-        <div className="container mx-auto px-4 sm:px-6 md:px-12 pt-20 pb-6 sm:py-24 md:py-32 h-full flex flex-col justify-between">
+        <div className="container mx-auto flex h-full flex-col justify-between px-4 pb-6 pt-20 sm:px-6 sm:py-24 md:px-12 md:py-32">
           <div className="space-y-1 sm:space-y-2">
             {menuItems.map((item, index) => (
               <MenuLink
@@ -360,38 +360,38 @@ const Navbar = () => {
           </div>
 
           <div
-            className={`mt-6 sm:mt-8 transition-all duration-700 delay-500 ${
+            className={`mt-6 transition-all delay-500 duration-700 sm:mt-8 ${
               isMenuOpen ? "opacity-100" : "opacity-0"
             }`}
           >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8">
               <div>
-                <h3 className="text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4 text-gray-400">
+                <h3 className="mb-3 text-xs uppercase tracking-widest text-gray-400 sm:mb-4 sm:text-sm">
                   Follow Us
                 </h3>
-                <div className="flex flex-row sm:flex-col space-x-4 sm:space-x-0 sm:space-y-2">
-                  <a href="#" className="text-xs sm:text-sm hover:underline">
+                <div className="flex flex-row space-x-4 sm:flex-col sm:space-x-0 sm:space-y-2">
+                  <a href="#" className="text-xs hover:underline sm:text-sm">
                     Instagram
                   </a>
-                  <a href="#" className="text-xs sm:text-sm hover:underline">
+                  <a href="#" className="text-xs hover:underline sm:text-sm">
                     TikTok
                   </a>
-                  <a href="#" className="text-xs sm:text-sm hover:underline">
+                  <a href="#" className="text-xs hover:underline sm:text-sm">
                     Facebook
                   </a>
                 </div>
               </div>
               <div className="mt-6 sm:mt-0">
-                <h3 className="text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4 text-gray-400">
+                <h3 className="mb-3 text-xs uppercase tracking-widest text-gray-400 sm:mb-4 sm:text-sm">
                   Newsletter
                 </h3>
                 <div className="flex border-b border-white">
                   <input
                     type="email"
                     placeholder="Your email"
-                    className="bg-transparent py-1 sm:py-2 flex-grow focus:outline-none text-xs sm:text-sm w-full"
+                    className="w-full flex-grow bg-transparent py-1 text-xs focus:outline-none sm:py-2 sm:text-sm"
                   />
-                  <button className="py-1 sm:py-2 px-2 sm:px-4 text-xs sm:text-sm whitespace-nowrap">
+                  <button className="whitespace-nowrap px-2 py-1 text-xs sm:px-4 sm:py-2 sm:text-sm">
                     Subscribe
                   </button>
                 </div>
@@ -403,20 +403,20 @@ const Navbar = () => {
 
       {/* Cart Slide-in Panel */}
       <div
-        className={`fixed inset-y-0 right-0 z-40 w-full sm:w-96 bg-black text-white font-mono transform transition-transform duration-500 ease-in-out ${
+        className={`fixed inset-y-0 right-0 z-40 w-full transform bg-black font-mono text-white transition-transform duration-500 ease-in-out sm:w-96 ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         ref={cartRef}
       >
-        <div className="h-full flex flex-col">
+        <div className="flex h-full flex-col">
           {/* Cart Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-800 mt-14 sm:mt-16">
+          <div className="mt-14 flex items-center justify-between border-b border-gray-800 p-4 sm:mt-16">
             <h2 className="text-lg font-medium">
               Shopping Cart ({cartItemCount})
             </h2>
             <button
               onClick={toggleCart}
-              className="p-1 hover:text-gray-400 transition-colors"
+              className="p-1 transition-colors hover:text-gray-400"
               aria-label="Close cart"
             >
               <X size={20} />
@@ -426,11 +426,11 @@ const Navbar = () => {
           {/* Cart Body */}
           <div className="flex-grow overflow-y-auto p-4">
             {cartItems.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center">
-                <p className="text-gray-400 mb-4">Your cart is empty</p>
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <p className="mb-4 text-gray-400">Your cart is empty</p>
                 <button
                   onClick={toggleCart}
-                  className="border border-white px-4 py-2 hover:bg-white hover:text-black transition-colors"
+                  className="border border-white px-4 py-2 transition-colors hover:bg-white hover:text-black"
                 >
                   Continue Shopping
                 </button>
@@ -452,7 +452,7 @@ const Navbar = () => {
           {/* Cart Footer */}
           {cartItems.length > 0 && (
             <div className="border-t border-gray-800 p-4">
-              <div className="space-y-2 mb-4">
+              <div className="mb-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-400">Subtotal</span>
                   <span>${subtotal.toFixed(2)}</span>
@@ -461,7 +461,7 @@ const Navbar = () => {
                   <span className="text-gray-400">Shipping</span>
                   <span>${shipping.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between font-medium pt-2 border-t border-gray-800">
+                <div className="flex justify-between border-t border-gray-800 pt-2 font-medium">
                   <span>Total</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
@@ -469,14 +469,14 @@ const Navbar = () => {
 
               <button
                 onClick={handleCheckout}
-                className="w-full bg-white text-black py-3 font-medium hover:bg-gray-200 transition-colors"
+                className="w-full bg-white py-3 font-medium text-black transition-colors hover:bg-gray-200"
               >
                 Checkout
               </button>
 
               <button
                 onClick={toggleCart}
-                className="w-full border border-white py-3 mt-2 font-medium hover:bg-white hover:text-black transition-colors"
+                className="mt-2 w-full border border-white py-3 font-medium transition-colors hover:bg-white hover:text-black"
               >
                 Continue Shopping
               </button>
@@ -488,7 +488,7 @@ const Navbar = () => {
       {/* Overlay for Cart */}
       {isCartOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="fixed inset-0 z-30 bg-black bg-opacity-50"
           onClick={toggleCart}
           aria-hidden="true"
         />

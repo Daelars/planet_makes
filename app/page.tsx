@@ -26,6 +26,7 @@ export default async function Home() {
       </div> */}
 
       <Hero />
+
       {/* <Cart /> */}
     </>
   );
