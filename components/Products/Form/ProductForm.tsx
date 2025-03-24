@@ -119,6 +119,22 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
       .map((color) => color.trim())
       .filter(Boolean);
 
+    // Validate required fields
+    if (!collection.trim()) {
+      alert("Collection name is required");
+      return;
+    }
+
+    if (!productName.trim()) {
+      alert("Product name is required");
+      return;
+    }
+
+    if (!price) {
+      alert("Price is required");
+      return;
+    }
+
     startTransition(() => {
       createProduct({
         collection,
@@ -126,17 +142,24 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
         showReviews,
         price: parseFloat(price),
         inStock,
-        shippingPrice: parseFloat(shippingPrice),
+        shippingPrice: parseFloat(shippingPrice || "0"),
         colours: coloursArray,
         description,
         productDetails,
         imageUrl: uploadUrl,
         isOnSale,
-        originalPrice: isOnSale ? parseFloat(originalPrice) : null,
-      }).then((res) => {
-        console.log("Product created", res);
-        onProductCreated(res);
-      });
+        originalPrice: isOnSale ? parseFloat(originalPrice || "0") : null,
+      })
+        .then((res) => {
+          console.log("Product created", res);
+          onProductCreated(res);
+        })
+        .catch((error) => {
+          console.error("Error creating product:", error);
+          alert(
+            `Failed to create product: ${error.message || "Unknown error"}`,
+          );
+        });
     });
   }
 
@@ -210,14 +233,14 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
   return (
     <motion.form
       onSubmit={handleSubmit}
-      className="border border-gray-800 relative overflow-hidden"
+      className="relative overflow-hidden border border-gray-800"
       variants={formVariants}
       initial="hidden"
       animate="visible"
     >
       {/* Progress bar */}
       <motion.div
-        className="absolute top-0 left-0 h-1 bg-white"
+        className="absolute left-0 top-0 h-1 bg-white"
         variants={progressVariants}
         initial="initial"
         animate="animate"
@@ -231,7 +254,7 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
       />
 
       {/* Form Content */}
-      <div className="px-5 overflow-hidden min-h-[380px]">
+      <div className="min-h-[380px] overflow-hidden px-5">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={activeSection}
@@ -248,10 +271,10 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
       </div>
 
       {/* Form Actions */}
-      <motion.div className="border-t border-gray-800 p-5 flex flex-col sm:flex-row justify-end">
+      <motion.div className="flex flex-col justify-end border-t border-gray-800 p-5 sm:flex-row">
         <motion.button
           type="button"
-          className="w-full mb-3 sm:mb-0 sm:w-auto sm:mr-3 border border-white py-2 px-6 font-medium hover:bg-white hover:text-black transition-colors text-sm"
+          className="mb-3 w-full border border-white px-6 py-2 text-sm font-medium transition-colors hover:bg-white hover:text-black sm:mb-0 sm:mr-3 sm:w-auto"
           onClick={handleNextSection}
           variants={buttonVariants}
           whileHover="hover"
@@ -262,7 +285,7 @@ export default function ProductForm({ onProductCreated }: ProductFormProps) {
 
         <motion.button
           type="submit"
-          className="w-full sm:w-auto bg-white text-black py-2 px-8 font-medium hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:hover:bg-white text-sm"
+          className="w-full bg-white px-8 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-200 disabled:opacity-50 disabled:hover:bg-white sm:w-auto"
           disabled={isPending || !uploadUrl}
           variants={buttonVariants}
           whileHover={!isPending && uploadUrl ? "hover" : "disabled"}

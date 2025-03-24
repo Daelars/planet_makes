@@ -25,12 +25,12 @@ const HomePage: React.FC = () => {
 
     const createScrollAnimation = (
       ref: React.RefObject<HTMLDivElement | null>,
-      direction: number
+      direction: number,
     ) => {
       if (!ref.current) return null;
 
       let position = 0;
-      const speed = 0.5; // pixels per frame
+      const speed = 0.1; // pixels per frame
 
       // Animation function
       const animate = () => {
@@ -82,28 +82,27 @@ const HomePage: React.FC = () => {
   }, [isLoaded]);
 
   return (
-    <div className="h-screen bg-gradient-to-r from-zinc-100 to-neutral-200 flex items-center justify-center p-6">
-      <div className="h-full w-full max-w-screen-2xl bg-black rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+    <div className="flex h-screen items-center justify-center bg-gradient-to-r from-zinc-100 to-neutral-200 p-6">
+      <div className="grid h-full w-full grid-cols-1 overflow-hidden rounded-2xl bg-black lg:grid-cols-2">
         {/* Left Section */}
-        <div className="bg-zinc-900 text-white flex flex-col justify-center p-16">
+        <div className="flex flex-col justify-center bg-zinc-950 p-16 text-white">
           <div className="mb-8">
-            <img src="/Vector.png" alt="Skill Swap Logo" className="h-8 mb-8" />
-            <h1 className="text-5xl font-bold leading-tight mb-4">
-              Non-technical online school.
+            <img src="/Vector.png" alt="Skill Swap Logo" className="mb-8 h-8" />
+            <h1 className="mb-4 text-7xl font-bold leading-tight">
+              Planet Makes.
             </h1>
-            <p className="text-zinc-400 mb-6">
-              Whether you want to learn or to share what you know, you've come
-              to the right place. We connect people through knowledge.
+            <p className="mb-6 text-zinc-400">
+              We Craft. We. Make. We Print. We Sell.
             </p>
-            <button className="bg-white text-black font-semibold py-3 px-6 rounded-full shadow-md hover:bg-zinc-200 transition">
-              Register now
+            <button className="rounded-full bg-white px-6 py-3 font-semibold text-black shadow-md transition hover:bg-zinc-200">
+              Shop now
             </button>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="bg-zinc-950 text-white  flex flex-col justify-between h-full relative overflow-hidden">
-          <div className="flex justify-end space-x-6 text-sm mb-8 z-10 p-10 lg:p-16">
+        <div className="relative flex h-full flex-col justify-between overflow-hidden bg-zinc-950 text-white">
+          <div className="z-10 mb-8 flex justify-end space-x-6 p-10 text-sm lg:p-16">
             <a href="#" className="hover:underline">
               About
             </a>
@@ -117,10 +116,10 @@ const HomePage: React.FC = () => {
               Support
             </a>
           </div>
-          <div className="flex flex-col gap-12 justify-center h-full relative z-0">
+          <div className="relative z-0 flex h-full flex-col justify-center gap-12">
             <div className="flex flex-col gap-6">
               {/* Row 1 - Scrolling left */}
-              <div className="overflow-hidden w-full">
+              <div className="w-full overflow-hidden">
                 <div
                   ref={row1Ref}
                   className="flex gap-4"
@@ -129,7 +128,7 @@ const HomePage: React.FC = () => {
                   {[...Array(10)].map((_, idx) => (
                     <div
                       key={`row1-${idx}`}
-                      className="w-64 h-64 bg-[#FDEDDC] flex items-center justify-center rounded-lg overflow-hidden shrink-0"
+                      className="flex h-64 w-64 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#FDEDDC]"
                     >
                       <img
                         src={
@@ -145,7 +144,7 @@ const HomePage: React.FC = () => {
                   {[...Array(10)].map((_, idx) => (
                     <div
                       key={`row1-dup-${idx}`}
-                      className="w-64 h-64 bg-[#FDEDDC] flex items-center justify-center rounded-lg overflow-hidden shrink-0"
+                      className="flex h-64 w-64 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#FDEDDC]"
                     >
                       <img
                         src={
@@ -161,7 +160,7 @@ const HomePage: React.FC = () => {
               </div>
 
               {/* Row 2 - Scrolling right */}
-              <div className="overflow-hidden w-full">
+              <div className="w-full overflow-hidden">
                 <div
                   ref={row2Ref}
                   className="flex gap-4"
@@ -170,7 +169,7 @@ const HomePage: React.FC = () => {
                   {[...Array(10)].map((_, idx) => (
                     <div
                       key={`row2-${idx}`}
-                      className="w-64 h-64 bg-[#D6C3F2] flex items-center justify-center rounded-lg overflow-hidden shrink-0"
+                      className="flex h-64 w-64 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#D6C3F2]"
                     >
                       <img
                         src={
@@ -186,7 +185,7 @@ const HomePage: React.FC = () => {
                   {[...Array(10)].map((_, idx) => (
                     <div
                       key={`row2-dup-${idx}`}
-                      className="w-64 h-64 bg-[#D6C3F2] flex items-center justify-center rounded-lg overflow-hidden shrink-0"
+                      className="flex h-64 w-64 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#D6C3F2]"
                     >
                       <img
                         src={

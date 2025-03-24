@@ -71,7 +71,7 @@ export default function ImagesSection({
       exit="exit"
     >
       <motion.h3
-        className="text-xs uppercase tracking-widest text-gray-400 mb-6"
+        className="mb-6 text-xs uppercase tracking-widest text-gray-400"
         variants={itemVariants}
       >
         Product Images
@@ -79,7 +79,7 @@ export default function ImagesSection({
 
       <div className="space-y-5">
         <motion.div
-          className="border border-dashed border-gray-700 p-8 text-center relative overflow-hidden"
+          className="relative overflow-hidden border border-dashed border-gray-700 p-8 text-center"
           variants={itemVariants}
           whileHover={{
             borderColor: "rgb(156, 163, 175)",
@@ -94,7 +94,7 @@ export default function ImagesSection({
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               <motion.div
-                className="flex justify-center mb-4"
+                className="mb-4 flex justify-center"
                 animate={{ y: [0, -5, 0] }}
                 transition={{
                   repeat: Infinity,
@@ -120,7 +120,7 @@ export default function ImagesSection({
           />
 
           <motion.p
-            className="text-gray-400 text-sm mt-4"
+            className="mt-4 text-sm text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.5 }}
@@ -140,19 +140,19 @@ export default function ImagesSection({
               layout
             >
               <motion.div
-                className="flex items-center mb-2"
+                className="mb-2 flex items-center"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <Check size={16} className="text-green-400 mr-2" />
-                <p className="text-gray-300 text-sm">
+                <Check size={16} className="mr-2 text-green-400" />
+                <p className="text-sm text-gray-300">
                   Image uploaded successfully!
                 </p>
               </motion.div>
 
               <motion.p
-                className="text-gray-300 text-sm mb-2"
+                className="mb-2 text-sm text-gray-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -161,7 +161,7 @@ export default function ImagesSection({
               </motion.p>
 
               <motion.div
-                className="border border-gray-800 p-1 relative group"
+                className="group relative border border-gray-800 p-1"
                 whileHover={{
                   boxShadow: "0 0 20px rgba(255, 255, 255, 0.15)",
                   borderColor: "rgb(156, 163, 175)",
@@ -170,7 +170,7 @@ export default function ImagesSection({
                 <motion.img
                   src={uploadUrl}
                   alt="Uploaded product"
-                  className="w-full h-auto max-h-64 object-contain bg-gray-900"
+                  className="h-auto max-h-64 w-full bg-gray-900 object-contain"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -183,14 +183,14 @@ export default function ImagesSection({
 
                 {/* Overlay and edit button */}
                 <motion.div
-                  className="absolute inset-0 bg-black pointer-events-none"
+                  className="pointer-events-none absolute inset-0 bg-black"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 0.5 }}
                   transition={{ duration: 0.2 }}
                 />
 
                 <motion.button
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white text-white py-1 px-3 text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform border border-white px-3 py-1 text-sm text-white opacity-0 transition-opacity group-hover:opacity-100"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setUploadUrl(null)}

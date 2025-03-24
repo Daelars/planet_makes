@@ -46,7 +46,7 @@ export default function UploadProductPage() {
 
   return (
     <motion.div
-      className="min-h-screen bg-black text-white font-mono"
+      className="min-h-screen bg-black font-mono text-white"
       variants={pageVariants}
       initial="initial"
       animate="animate"
@@ -54,9 +54,9 @@ export default function UploadProductPage() {
       {/* Spacer for fixed navbar */}
       <div className="h-14 sm:h-16"></div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
         <motion.h1
-          className="text-xl sm:text-2xl font-medium mb-8 sm:mb-12 text-center"
+          className="mb-8 text-center text-xl font-medium sm:mb-12 sm:text-2xl"
           variants={childVariants}
         >
           <AnimatePresence mode="wait">
@@ -75,7 +75,7 @@ export default function UploadProductPage() {
         </motion.h1>
 
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-5 gap-8"
+          className="grid grid-cols-1 gap-8 lg:grid-cols-5"
           variants={childVariants}
         >
           {/* Form Area */}
@@ -128,7 +128,7 @@ export default function UploadProductPage() {
 
       {/* Background animated gradient */}
       <motion.div
-        className="fixed inset-0 -z-10 opacity-20 pointer-events-none"
+        className="pointer-events-none fixed inset-0 -z-10 opacity-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.2 }}
         transition={{ duration: 2 }}
