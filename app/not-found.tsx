@@ -2,105 +2,42 @@
 import { useEffect } from "react";
 import { motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { ScreenFitText } from "@/components/Text/Fit";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
+// Variants for the animated elements
+const particleVariants = {
+  hidden: { opacity: 0, scale: 0 },
+  visible: { opacity: 0.2, scale: 1 },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+};
+
+const numberVariants = {
+  hidden: { opacity: 0, y: -50 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const messageVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export default function NotFoundPage() {
+  const router = useRouter(); // hook for navigation
   const controls = useAnimation();
   const { scrollY } = useScroll();
 
-  // Create scroll-based transformations
-  const yRange = useTransform(scrollY, [0, 300], [0, -100]);
+  // Create dynamic transform values based on scroll position
+  const yRange = useTransform(scrollY, [0, 300], [0, -50]);
   const opacityRange = useTransform(scrollY, [0, 300], [1, 0]);
 
+  // Animate the components when the page loads
   useEffect(() => {
-    // Trigger the animation sequence on mount
-    const animateSequence = async () => {
-      await controls.start("visible");
-    };
-
-    animateSequence();
+    controls.start("visible");
   }, [controls]);
-
-  // Variants for the main container
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  // Variants for the 404 number
-  const numberVariants = {
-    hidden: {
-      y: -100,
-      opacity: 0,
-      rotateX: 90,
-    },
-    visible: {
-      y: 0,
-      opacity: 1,
-      rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  };
-
-  // Variants for the message text
-  const messageVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: 0.5,
-        duration: 0.8,
-      },
-    },
-  };
-
-  // Variants for floating particles
-  interface ParticleTransition {
-    delay: number;
-    duration: number;
-    repeat: number;
-    repeatType: "reverse";
-    repeatDelay: number;
-  }
-
-  interface ParticleVisible {
-    opacity: number;
-    scale: number;
-    transition: ParticleTransition;
-  }
-
-  interface ParticleVariants {
-    hidden: { opacity: number; scale: number };
-    visible: (i: number) => ParticleVisible;
-    [key: string]: any;
-  }
-
-  const particleVariants: ParticleVariants = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: (i: number) => ({
-      opacity: 0.7,
-      scale: 1,
-      transition: {
-        delay: 1 + i * 0.1,
-        duration: 0.5,
-        repeat: Infinity,
-        repeatType: "reverse",
-        repeatDelay: Math.random() * 2,
-      },
-    }),
-  };
 
   return (
     <div className="relative h-screen overflow-hidden bg-black">
@@ -112,7 +49,7 @@ export default function Page() {
           variants={particleVariants}
           initial="hidden"
           animate="visible"
-          className="absolute rounded-full bg-white opacity-20"
+          className="absolute rounded-full bg-white"
           style={{
             x: Math.random() * window.innerWidth,
             y: Math.random() * window.innerHeight,
@@ -146,8 +83,9 @@ export default function Page() {
           />
         </motion.div>
 
-        {/* Return home button with hover animation */}
+        {/* Return home button with redirection */}
         <motion.button
+          onClick={() => router.push("/page.tsx")}
           className="mt-12 rounded-full bg-white px-8 py-3 font-medium text-black"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
