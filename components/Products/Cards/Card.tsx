@@ -37,7 +37,7 @@ interface ProductCardProps {
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-);
+).catch((error) => console.error("Stripe initialization failed:", error));
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isLiked, setIsLiked] = useState(false);

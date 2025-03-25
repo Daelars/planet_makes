@@ -15,8 +15,16 @@ export default function CartCheckoutButton({
 }) {
   const handleCheckout = async () => {
     const stripe = await loadStripe(
-      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
-    );
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "",
+    ).catch((error) => {
+      console.error("Stripe initialization failed:", error);
+      return null;
+    });
+    if (!stripe) {
+      // Handle the error, e.g., show an error message to the user
+      console.error("Stripe not initialized");
+      return;
+    }
     interface Product {
       name: string;
       imageUrl: string;
@@ -51,7 +59,7 @@ export default function CartCheckoutButton({
 
   return (
     <button
-      className="w-full bg-blue-600 text-white py-3 rounded-md mt-4 hover:bg-blue-700"
+      className="mt-4 w-full rounded-md bg-blue-600 py-3 text-white hover:bg-blue-700"
       onClick={handleCheckout}
     >
       Proceed to Checkout
