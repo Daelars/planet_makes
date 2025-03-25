@@ -85,7 +85,7 @@ export default function NotFoundPage() {
 
         {/* Return home button with redirection */}
         <motion.button
-          onClick={() => router.push("/app/page.tsx")}
+          onClick={() => router.push("/")}
           className="mt-12 rounded-full bg-white px-8 py-3 font-medium text-black"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
