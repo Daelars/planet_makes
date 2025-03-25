@@ -12,6 +12,9 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { addToCart } from "@/app/actions/cart"; // Import the server action
 import { motion, AnimatePresence } from "framer-motion";
+interface ProductCardProps {
+  product: Product;
+}
 
 export interface Product {
   collection?: string;
