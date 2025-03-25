@@ -14,6 +14,7 @@ import { addToCart } from "@/app/actions/cart"; // Import the server action
 import { motion, AnimatePresence } from "framer-motion";
 interface ProductCardProps {
   product: Product;
+  isAdmin?: boolean;
 }
 
 export interface Product {
@@ -29,10 +30,6 @@ export interface Product {
   originalPrice?: number;
   images: { id: string; imageUrl: string }[];
   details?: string[]; // Array of product detail bullet points
-}
-
-interface ProductCardProps {
-  product: Product;
 }
 
 const stripePromise = loadStripe(
