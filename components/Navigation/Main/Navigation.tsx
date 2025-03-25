@@ -1,4 +1,4 @@
-//Components/Main/Navigation.tsx
+// Components/Main/Navigation.tsx
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -11,6 +11,7 @@ import {
   Minus,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 // NEW: Import Clerk components
 import {
   SignInButton,
@@ -24,15 +25,21 @@ import { loadStripe } from "@stripe/stripe-js";
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
-const MenuLink = ({
-  label,
-  delay = 0,
-  isOpen,
-}: {
+interface MenuItemProps {
   label: string;
+  href: string;
   delay?: number;
   isOpen: boolean;
-}) => {
+  onClick: () => void;
+}
+
+const MenuLink = ({
+  label,
+  href,
+  delay = 0,
+  isOpen,
+  onClick,
+}: MenuItemProps) => {
   return (
     <div
       className={`overflow-hidden transition-transform duration-700 ${
@@ -40,9 +47,10 @@ const MenuLink = ({
       }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <a
-        href="#"
-        className="group block items-center py-2 text-xl font-bold sm:py-3 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
+      <Link
+        href={href}
+        onClick={onClick}
+        className="group block items-center py-2 font-[family-name:var(--font-ultra)] text-xl sm:py-3 sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
       >
         <span className="relative inline-block">
           <span className="touch-device:active:translate-x-2 block transition-transform duration-300 group-hover:translate-x-2">
@@ -54,7 +62,7 @@ const MenuLink = ({
           className="touch-device:active:opacity-100 touch-device:active:translate-x-1 ml-2 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
           size={16}
         />
-      </a>
+      </Link>
     </div>
   );
 };
@@ -135,10 +143,20 @@ const CartItem = ({
   );
 };
 
+interface CartItemType {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  color: string;
+  size: string;
+}
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]); // Start with an empty cart
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const cartRef = useRef<HTMLDivElement | null>(null);
 
@@ -166,7 +184,7 @@ const Navbar = () => {
   // Close menu/cart if clicked outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
+      const target = event.target as HTMLElement;
       if (target) {
         if (menuRef.current && !menuRef.current.contains(target)) {
           if (isMenuOpen) {
@@ -190,39 +208,26 @@ const Navbar = () => {
     };
   }, [isMenuOpen, isCartOpen]);
 
+  // NEW: Update menuItems to include href
   const menuItems = [
-    "Collections",
-    "New Arrivals",
-    "Products",
-    "Accessories",
-    "About Us",
-    "Contact",
+    { label: "Collections", href: "/collections" },
+    { label: "New Arrivals", href: "/new-arrivals" },
+    { label: "Products", href: "/products" },
+    { label: "Accessories", href: "/accessories" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ];
-
-  interface CartItem {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
-    image: string;
-    color: string;
-    size: string;
-  }
 
   const updateQuantity = (id: number, newQuantity: number): void => {
     if (newQuantity < 1) return;
     setCartItems(
-      cartItems.map((item: CartItem) =>
+      cartItems.map((item: CartItemType) =>
         item.id === id ? { ...item, quantity: newQuantity } : item,
       ),
     );
   };
 
-  interface RemoveItem {
-    (id: number): void;
-  }
-
-  const removeItem: RemoveItem = (id) => {
+  const removeItem = (id: number) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
@@ -257,7 +262,9 @@ const Navbar = () => {
       const { sessionId } = await response.json();
 
       // Redirect to Stripe Checkout
-      const result = await stripe.redirectToCheckout({ sessionId });
+      const result = await stripe.redirectToCheckout({
+        sessionId,
+      });
       if (result.error) {
         console.error("Stripe Checkout error:", result.error.message);
       }
@@ -274,7 +281,7 @@ const Navbar = () => {
         const res = await fetch("/api/cart");
         if (res.ok) {
           const data = await res.json();
-          // Ensure data is an array; if not, default to an empty array.
+          // Ensure data is an array; if not, default to empty array.
           setCartItems(Array.isArray(data) ? data : []);
         }
       } catch (error) {
@@ -286,7 +293,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="left-0 top-0 z-50 flex w-full items-center justify-between bg-black p-3 font-mono text-white sm:p-4">
+      <nav className="left-0 top-0 z-50 flex w-full items-center justify-between bg-black p-3 font-[family-name:var(--font-pt-serif)] text-white sm:p-4">
         <div className="flex items-center">
           <button
             className="relative z-50 flex items-center text-base font-medium hover:cursor-pointer sm:text-lg"
@@ -307,7 +314,9 @@ const Navbar = () => {
             )}
           </button>
         </div>
-        <div className="text-base font-medium sm:text-lg">009</div>
+        <div className="font-[family-name:var(--font-ultra)] text-base sm:text-lg">
+          009
+        </div>
         <div className="flex items-center space-x-4">
           <button
             className="relative z-50 flex items-center text-base font-medium hover:cursor-pointer sm:text-lg"
@@ -342,7 +351,7 @@ const Navbar = () => {
 
       {/* Fullscreen Menu */}
       <div
-        className={`fixed inset-0 z-40 overflow-y-auto bg-black font-mono text-white transition-transform duration-500 ${
+        className={`fixed inset-0 z-40 overflow-y-auto bg-black font-[family-name:var(--font-pt-serif)] text-white transition-transform duration-500 ${
           isMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
         ref={menuRef}
@@ -351,10 +360,12 @@ const Navbar = () => {
           <div className="space-y-1 sm:space-y-2">
             {menuItems.map((item, index) => (
               <MenuLink
-                key={item}
-                label={item}
+                key={item.href}
+                label={item.label}
+                href={item.href}
                 delay={index * 100}
                 isOpen={isMenuOpen}
+                onClick={toggleMenu}
               />
             ))}
           </div>
@@ -403,7 +414,7 @@ const Navbar = () => {
 
       {/* Cart Slide-in Panel */}
       <div
-        className={`fixed inset-y-0 right-0 z-40 w-full transform bg-black font-mono text-white transition-transform duration-500 ease-in-out sm:w-96 ${
+        className={`fixed inset-y-0 right-0 z-40 w-full transform bg-black font-[family-name:var(--font-pt-serif)] text-white transition-transform duration-500 ease-in-out sm:w-96 ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         ref={cartRef}

@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Geist, Geist_Mono } from "next/font/google";
+import { PT_Serif, Ultra } from "next/font/google";
 import { PostHogProvider } from "../components/PostHogProvider";
 import "./globals.css";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ultraSans = Ultra({
+  variable: "--font-ultra",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const ptSerif = PT_Serif({
+  variable: "--font-pt-serif",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +31,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${ptSerif.variable} ${ultraSans.variable} antialiased`}
         >
           <PostHogProvider>
             {" "}

@@ -88,13 +88,13 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col justify-center bg-zinc-950 p-16 text-white">
           <div className="mb-8">
             <img src="/Vector.png" alt="Skill Swap Logo" className="mb-8 h-8" />
-            <h1 className="mb-4 text-7xl font-bold leading-tight">
+            <h1 className="mb-4 font-[family-name:var(--font-ultra)] text-7xl leading-loose">
               Planet Makes.
             </h1>
-            <p className="mb-6 text-zinc-400">
+            <p className="mb-6 font-[family-name:var(--font-pt-serif)] text-zinc-400">
               We Craft. We. Make. We Print. We Sell.
             </p>
-            <button className="rounded-full bg-white px-6 py-3 font-semibold text-black shadow-md transition hover:bg-zinc-200">
+            <button className="rounded-full bg-white px-6 py-3 font-[family-name:var(--font-pt-serif)] font-semibold text-black shadow-md transition hover:bg-zinc-200">
               Shop now
             </button>
           </div>
@@ -102,20 +102,7 @@ const HomePage: React.FC = () => {
 
         {/* Right Section */}
         <div className="relative flex h-full flex-col justify-between overflow-hidden bg-zinc-950 text-white">
-          <div className="z-10 mb-8 flex justify-end space-x-6 p-10 text-sm lg:p-16">
-            <a href="#" className="hover:underline">
-              About
-            </a>
-            <a href="#" className="hover:underline">
-              Courses
-            </a>
-            <a href="#" className="hover:underline">
-              Blog
-            </a>
-            <a href="#" className="hover:underline">
-              Support
-            </a>
-          </div>
+          <div className="z-10 mb-8 flex justify-end space-x-6 p-10 text-sm lg:p-16"></div>
           <div className="relative z-0 flex h-full flex-col justify-center gap-12">
             <div className="flex flex-col gap-6">
               {/* Row 1 - Scrolling left */}
