@@ -3,20 +3,14 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { Product } from "@/types/global.types";
 
-interface CreateProductInput {
+interface CreateProductInput extends Partial<Product> {
   collection: string;
   name: string;
   showReviews: boolean;
   price: number;
-  inStock: boolean;
   shippingPrice: number;
-  colours: string[];
-  description: string;
-  productDetails: string;
-  imageUrl: string;
-  isOnSale: boolean;
-  originalPrice: number | null;
 }
 
 export async function createProduct(input: CreateProductInput) {

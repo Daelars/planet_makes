@@ -1,11 +1,13 @@
 import React from "react";
-// ...existing imports...
+import { Product } from "@/types/global.types";
+
+interface CardProps {
+  product: Product;
+}
 
 const Card = ({
   product,
-}: {
-  product: { id: number /* ...existing properties... */ };
-}) => {
+}: CardProps) => {
   // ...existing code...
 
   async function handleAddToCart() {

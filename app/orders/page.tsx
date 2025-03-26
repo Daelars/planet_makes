@@ -3,6 +3,7 @@
 
 import { useTransition } from "react";
 import { createOrder } from "../actions/createOrder";
+import { OrderItem } from "@/types/global.types";
 
 export default function CreateOrderForm() {
   const [isPending, startTransition] = useTransition();

@@ -5,24 +5,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { X, Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getCartItems } from "@/app/actions/cart"; // Import the server action
-
-// Define the types based on your data model
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  color?: string;
-  size?: string;
-}
-
-export interface CartItem {
-  id: string;
-  quantity: number;
-  product: Product;
-  color?: string;
-  size?: string;
-}
+import { Product, CartItem } from "@/types/global.types";
 
 interface CartData {
   id: string;

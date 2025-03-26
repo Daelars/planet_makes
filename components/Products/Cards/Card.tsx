@@ -12,25 +12,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { addToCart } from "@/app/actions/cart"; // Import the server action
 import { motion, AnimatePresence } from "framer-motion";
-interface ProductCardProps {
-  product: Product;
-  isAdmin?: boolean;
-}
-
-export interface Product {
-  collection?: string;
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  rating?: number;
-  reviewsCount?: number;
-  isOnSale?: boolean;
-  originalPrice?: number;
-  images: { id: string; imageUrl: string }[];
-  details?: string[]; // Array of product detail bullet points
-}
+import { Product, ProductCardProps } from "@/types/global.types";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,

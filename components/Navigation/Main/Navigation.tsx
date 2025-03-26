@@ -21,16 +21,14 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { loadStripe } from "@stripe/stripe-js";
+import { MenuLinkProps, CartItem as CartItemType } from "@/types/global.types";
 
 // Initialize Stripe
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 ).catch((error) => console.error("Stripe initialization failed:", error));
-interface MenuItemProps {
-  label: string;
+interface MenuItemProps extends MenuLinkProps {
   href: string;
-  delay?: number;
-  isOpen: boolean;
   onClick: () => void;
 }
 
@@ -143,16 +141,6 @@ const CartItem = ({
     </div>
   );
 };
-
-interface CartItemType {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  color: string;
-  size: string;
-}
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

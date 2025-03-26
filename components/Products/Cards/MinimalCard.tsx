@@ -8,25 +8,7 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-
-interface ProductImage {
-  id: string;
-  imageUrl: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  images: ProductImage[];
-  colors?: string[];
-  sizes?: string[];
-  isOnSale?: boolean;
-  originalPrice?: number;
-  imageUrl?: string;
-}
+import { Product, ProductImage } from "@/types/global.types";
 
 interface MinimalProductCardProps {
   product: Product;

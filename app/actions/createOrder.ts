@@ -6,15 +6,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-
-/**
- * Interface for order item data
- */
-interface OrderItem {
-  productId: string;
-  quantity: number;
-  price: number;
-}
+import { Order, OrderItem, OrderStatus } from "@/types/global.types";
 
 /**
  * Creates a new order in the database
