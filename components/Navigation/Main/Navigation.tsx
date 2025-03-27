@@ -72,23 +72,23 @@ const CartItem = ({
   removeItem,
 }: {
   item: {
-    id: number;
-    name: string;
+    id: string;
+    name?: string;
     price: number;
     quantity: number;
-    image: string;
+    image?: string;
     color: string;
     size: string;
   };
-  updateQuantity: (id: number, newQuantity: number) => void;
-  removeItem: (id: number) => void;
+  updateQuantity: (id: string, newQuantity: number) => void;
+  removeItem: (id: string) => void;
 }) => {
   return (
     <div className="flex border-b border-gray-800 py-4">
       <div className="h-30 mr-4 w-24 bg-gray-900">
         <img
-          src={item.image}
-          alt={item.name}
+          src={item.image ?? ""}
+          alt={item.name ?? "Unnamed item"}
           className="h-full w-full object-cover"
         />
       </div>
@@ -207,7 +207,7 @@ const Navbar = () => {
     { label: "Contact", href: "/contact" },
   ];
 
-  const updateQuantity = (id: number, newQuantity: number): void => {
+  const updateQuantity = (id: string, newQuantity: number): void => {
     if (newQuantity < 1) return;
     setCartItems(
       cartItems.map((item: CartItemType) =>
@@ -216,7 +216,7 @@ const Navbar = () => {
     );
   };
 
-  const removeItem = (id: number) => {
+  const removeItem = (id: string) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
@@ -440,7 +440,11 @@ const Navbar = () => {
                 {cartItems.map((item) => (
                   <CartItem
                     key={item.id}
-                    item={item}
+                    item={{
+                      ...item,
+                      color: item.color ?? "",
+                      size: item.size ?? "",
+                    }}
                     updateQuantity={updateQuantity}
                     removeItem={removeItem}
                   />
