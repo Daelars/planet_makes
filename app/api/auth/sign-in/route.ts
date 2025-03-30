@@ -10,12 +10,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
     const primaryEmail = user.emailAddresses.find(
-      (email) => email.id === user.primaryEmailAddressId
+      (email) => email.id === user.primaryEmailAddressId,
     )?.emailAddress;
     if (!primaryEmail) {
       return NextResponse.json(
         { error: "User does not have a primary email address" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,14 +38,14 @@ export async function POST(req: NextRequest) {
         email: primaryEmail,
         name: fullName,
         updatedAt: new Date(),
-        Cart: {
+        cart: {
           create: {
             id: cartId,
             updatedAt: new Date(),
           },
         },
       },
-      include: { Cart: true },
+      include: { cart: true },
     });
 
     const status = upsertedUser.createdAt ? 201 : 200; // if created new, status 201; else 200
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     console.error("Error in sign-in route:", error);
     return NextResponse.json(
       { error: "Failed to process sign-in" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

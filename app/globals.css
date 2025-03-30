@@ -11,87 +11,28 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --brand-light-purple: #d8cfff;
+    --brand-dark-purple: #2c2a3a;
+    --brand-pink: #ff80bf;
+    --brand-lime: #d4ff80;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  scroll-behavior: smooth;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Optional: Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+::-webkit-scrollbar-track {
+  background: #1a202c;
 }
-
-.touch-device:active .active\:translate-x-2 {
-  transform: translateX(0.5rem);
-}
-
-/* Text reveal animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-up {
-  animation: fadeUp 0.8s ease forwards;
-}
-
-.fade-up-delay-1 {
-  animation: fadeUp 0.8s ease forwards;
-  animation-delay: 0.2s;
-}
-
-.fade-up-delay-2 {
-  animation: fadeUp 0.8s ease forwards;
-  animation-delay: 0.4s;
-}
-
-/* Image hover effects */
-.img-hover-zoom {
-  overflow: hidden;
-}
-
-.img-hover-zoom img {
-  transition: transform 0.7s ease;
-}
-
-.img-hover-zoom:hover img {
-  transform: scale(1.05);
-}
-
-/* Special emphasis text */
-.emphasis-text {
-  position: relative;
-  display: inline-block;
-}
-
-.emphasis-text::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: white;
-  transition: width 0.3s ease;
-}
-
-.emphasis-text:hover::after {
-  width: 100%;
+::-webkit-scrollbar-thumb {
+  background-color: #8a2be2;
+  border-radius: 20px;
+  border: 2px solid #1a202c;
 }
