@@ -76,14 +76,14 @@ model OrderItem {
 }
 
 model Payment {
-  id                    String        @id @default(cuid())
-  orderId               String        @unique
-  stripePaymentIntentId String?
-  amount                Float
-  status                PaymentStatus @default(PENDING)
-  createdAt             DateTime      @default(now())
-  updatedAt             DateTime      @updatedAt
-  order                 Order         @relation(fields: [orderId], references: [id])
+  id            String        @id @default(cuid())
+  orderId       String        @unique
+  polarOrderId  String?      // Add this field
+  amount        Float
+  status        PaymentStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  order         Order         @relation(fields: [orderId], references: [id])
 }
 
 model Cart {
@@ -125,3 +125,4 @@ enum Role {
   ADMIN
   MANAGER
 }
+
